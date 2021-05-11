@@ -42,13 +42,10 @@ public class CobolParser {
 	 *         <object>COBOL</object> from a source code file.
 	 */
 	public Parser cobol() {
-		Alternation a = new Alternation();
-		
-		a.add(constantValue());
-		
+		Alternation a = new Alternation();		
+		a.add(constantValue());		
 		Symbol fullstop = new Symbol('.');
 		fullstop.discard();
-		
 		a.add( ProgramID() );
 		
 		a.add( DivisionName() );
