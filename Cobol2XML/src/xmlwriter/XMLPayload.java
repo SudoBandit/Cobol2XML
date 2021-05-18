@@ -35,6 +35,8 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Attr;
+
 
 import java.util.logging.Logger;
 
@@ -67,11 +69,39 @@ public class XMLPayload {
 	}
 	
 	
-	public void addElements(Cobol c) {
+	void addConstantValueElement(String constantName,
+			double constantValue, int lineNumber) {
+			// Program ID element
+			if(constantName != null) {
+			Element cobolname = doc.createElement("Constant");
+			// insert name of constant into XML file
+			Element constID = doc.createElement("Constant");
+			Attr attrType2 = doc.createAttribute("Name" );
+			attrType2.setValue( constantName );
+			constID.setAttributeNode(attrType2);
+			cobolname.appendChild(constID);
+			// insert line number of constant into XML file
+			Element lineID = doc.createElement(constantName);
+			Attr attrType = doc.createAttribute("Line_Number" );
+			attrType.setValue( Integer.toString(lineNumber) );
+			lineID.setAttributeNode(attrType);
+			cobolname.appendChild(lineID);
+			// insert value of constant into XML file
+			Element constantID = doc.createElement(constantName);
+			Attr attrType1 = doc.createAttribute("Value" );
+			attrType1.setValue( Double.toString(constantValue) );
+			constantID.setAttributeNode(attrType1);
+			cobolname.appendChild(constantID);
+			rootElement.appendChild(cobolname);
+			}
+			}
+
+	
+public void addElements(Cobol c) {
 		/*
 		 *  add sectionName element
-		 */		
-		String sectionName = c.getSectionName();
+		 */
+			String sectionName = c.getSectionName();
 		if (sectionName != null) {
 			this.addSectionElement( sectionName );
 			
@@ -209,6 +239,7 @@ public class XMLPayload {
 		try {
 		// write the content into xml file
 		// insert debug printf "WriteFile Filename: " + filename
+		System.out.println("write Filename : "+filename);
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // XML parsers should not be vulnerable to XXE attacks
         transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, ""); // XML parsers should not be vulnerable to XXE attacks

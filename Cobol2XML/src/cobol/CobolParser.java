@@ -42,11 +42,10 @@ public class CobolParser {
 	 *         <object>COBOL</object> from a source code file.
 	 */
 	public Parser cobol() {
-		Alternation a = new Alternation();
-		
+		Alternation a = new Alternation();		
+		a.add(constantValue());		
 		Symbol fullstop = new Symbol('.');
 		fullstop.discard();
-		
 		a.add( ProgramID() );
 		
 		a.add( DivisionName() );
@@ -58,7 +57,23 @@ public class CobolParser {
 		a.add(new Empty());
 		return a;
 	}
-	
+	/*
+	* Return a parser that will recognize the grammar:
+	*
+	* <line number> <contstant name> "value" <constant value>.
+	*
+	*/
+
+	private Parser constantValue() {
+		Sequence s = new Sequence();
+		s.add(new Num() );
+		s.add(new Word() );
+		s.add(new CaselessLiteral("value") );
+		s.add(new Num() );
+		s.setAssembler(new ConstantValueAssembler() );
+		return s;
+	}
+
 	/*
 	 * Return a parser that will recognize the grammar:
 	 * 

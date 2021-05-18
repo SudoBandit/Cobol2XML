@@ -25,9 +25,16 @@ import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import logger.*;
-import parse.*;
-import parse.tokens.*;
-import xmlwriter.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import parse.Assembly;
+import parse.Parser;
+import parse.tokens.TokenAssembly;
+import parse.tokens.Tokenizer;
+import xmlwriter.XMLPayload;
 
 public class Cobol2XML {
 	/**
